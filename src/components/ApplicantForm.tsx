@@ -1,9 +1,20 @@
 import { Form } from "react-bootstrap"
 
-export const ApplicantForm = (props: {data: any, setData: Function}) => {
+export const ApplicantForm = (props: {data: any; setData: Function; selectedPrimaryApplicant: number | null; setPrimaryApplicant: Function, index: number}) => {
     const setFormData = (event: any, attributeName: string) => {
         const formData = props.data;
         formData[attributeName] = event.target.value;
+        props.setData(formData);
+    }
+
+    const setFormCheckboxData = (event: any, attributeName: string) => {
+        const formData = props.data;
+        formData[attributeName] = event.target.checked;
+        if(event.target.checked){
+            props.setPrimaryApplicant(props.index);
+        }else{
+            props.setPrimaryApplicant(null);
+        }
         props.setData(formData);
     }
 
@@ -25,6 +36,15 @@ export const ApplicantForm = (props: {data: any, setData: Function}) => {
                 <Form.Label>Mobile Number</Form.Label>
                 <Form.Control type="number" min="10" placeholder="Enter Mobile Number" onChange={(event) => {setFormData(event,"mobileNumber")}} defaultValue={props.data.mobileNumber}/>
             </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Label>Primary Applicant</Form.Label>
+                <Form.Check
+                    type="checkbox"
+                    disabled={props.selectedPrimaryApplicant !== null && props.selectedPrimaryApplicant !== props.index}
+                    onClick={(event) => {setFormCheckboxData(event,"isPrimary")}}
+                />
+            </Form.Group>
+
         </div>
     )
 }

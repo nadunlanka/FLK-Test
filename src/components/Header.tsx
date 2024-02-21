@@ -10,8 +10,18 @@ export const Header = () => {
 
     const addApplicants = (data: IApplicant[]) => {
         let currentApplicants = context?.applicants;
+        let i = 0;
+        for (const applicant of data) {
+           if(applicant.isPrimary){
+            context?.setPrimaryApplicant(i + currentApplicants!.length);
+           } 
+           i++;
+
+        }
+
         currentApplicants = [...currentApplicants!, ...data];
         context?.setApplicants(currentApplicants);
+
     }
 
     const handleShow = () => setShow(true);

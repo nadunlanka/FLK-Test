@@ -1,7 +1,7 @@
 import { Button, Form } from "react-bootstrap"
 
 export const TableRow = (props: {
-    number: number; firstName: string; lastName: string, primaryApplicant: boolean, mobileNumber:string, email: string, setSwitchId:Function, switchId: number | null, deleteFunction: Function
+    number: number; firstName: string; lastName: string, primaryApplicant: number | null, mobileNumber:string, email: string, setSwitchId:Function, switchId: number | null, deleteFunction: Function
 }) => {
     return (
         <tr id={props.number.toString()}>
@@ -11,9 +11,9 @@ export const TableRow = (props: {
             <td>{props.mobileNumber}</td>
             <td>
                 <Form.Check
-                    disabled = {(props.switchId === null) ? false : props.primaryApplicant === false}
+                    disabled = {(props.switchId === null) ? false : props.primaryApplicant !== props.number}
                     type="checkbox"
-                    checked={props.primaryApplicant}
+                    checked={props.primaryApplicant === props.number}
                     id={`switch_${props.number}`}
                     onClick={() => (props.switchId === null) ? props.setSwitchId(props.number) : props.setSwitchId(null)}
                 />

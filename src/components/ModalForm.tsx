@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import { ApplicantForm } from "./ApplicantForm";
 import { IApplicant } from "../interfaces";
+import { Context } from "../context";
 
 export const ModalForm = (props: { show: boolean; setShow: Function; title: string, setData: Function }) => {
-
+  
+  const context = useContext(Context);
   const [newApplicant, setNewApplicant] = useState(false);
+  const [primaryApplicant, setPrimaryApplicant] = useState(context!.primaryApplicant);
 
   const [applicantData, setApplicantData] = useState<IApplicant[]>(
     [{
@@ -61,12 +64,14 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
 
     const newApplicants = [];
     let isValid =true;
+    let isPrimary = false;
     for (const data of applicants) {
       const errorMessage = {
         firstName: "",
         lastName: "",
         mobileNumber: "",
-        email: ""
+        email: "",
+        isPrimary: ""
       };
       errorMessage.firstName = (data.firstName!.length === 0) ? "Please Enter First Name" : "";
       errorMessage.lastName = (data.lastName!.length === 0) ? "Please Enter last Name" : "";
@@ -81,6 +86,10 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
         errorMessage.email = (!validateEmail(data.email!)) ? "Invalid Email" : "";
       }
 
+      if(data.isPrimary){
+        isPrimary = true;
+      }
+
       if (errorMessage.firstName || errorMessage.lastName || errorMessage.email || errorMessage.mobileNumber) {
         data.errors = errorMessage;
         newApplicants.push(data);
@@ -93,6 +102,11 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
 
     if (!isValid) {
       setApplicantData(newApplicants);
+    }
+
+    if(!isPrimary){
+      alert("Please select a primary applicant.");
+      return false;
     }
 
     return isValid;
@@ -120,7 +134,7 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
             applicantData.map((data, i) => {
               return <div key={i}>
                 {i > 0 ? <hr /> : "" }
-                <ApplicantForm key={i} data={data} setData={(newData: IApplicant) => setData(newData, i)} />
+                <ApplicantForm key={i} data={data} setData={(newData: IApplicant) => setData(newData, i)} selectedPrimaryApplicant={primaryApplicant} setPrimaryApplicant={setPrimaryApplicant} index={i+context!.applicants.length}/>
                 {(data.errors) ? <Alert key={"danger"} variant={"danger"} style={{ marginBottom: "10px" }}>
                 <div>{data.errors.firstName!}</div>
                 <div>{data.errors.lastName!}</div>

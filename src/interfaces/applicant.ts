@@ -3,6 +3,7 @@ interface Applicant {
     lastName?: string;
     email?: string;
     mobileNumber?: string;
+    isPrimary?: boolean | string;
 }
 
 export interface IApplicant extends Applicant{
@@ -12,4 +13,7 @@ export interface IApplicant extends Applicant{
 export type IApplicantContext = {
     applicants: IApplicant[];
     setApplicants: React.Dispatch<React.SetStateAction<IApplicant[]>>;
+    primaryApplicant: number | null;
+    setPrimaryApplicant: React.Dispatch<React.SetStateAction<number | null>>;
+
 }

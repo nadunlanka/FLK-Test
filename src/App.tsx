@@ -7,7 +7,8 @@ import { IApplicantContext } from './interfaces';
 
 const App: React.FC = () => {
   const [applicants, setApplicants] = useState<IApplicantContext['applicants']>([]);
-  const value = useMemo(()=> ({applicants, setApplicants}), [applicants])
+  const [primaryApplicant, setPrimaryApplicant] = useState<IApplicantContext['primaryApplicant']>(null);
+  const value = useMemo(()=> ({applicants, setApplicants, primaryApplicant, setPrimaryApplicant}), [applicants, primaryApplicant])
 
   return (
     <div>
