@@ -9,6 +9,7 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
   const context = useContext(Context);
   const [newApplicant, setNewApplicant] = useState(false);
   const [primaryApplicant, setPrimaryApplicant] = useState(context!.primaryApplicant);
+  const [isPrimarySelected, setIsPrimarySelected] = useState(true);
 
   const [applicantData, setApplicantData] = useState<IApplicant[]>(
     [{
@@ -75,7 +76,7 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
 
     const newApplicants = [];
     let isValid =true;
-    let isPrimary = false;
+    let isPrimary = primaryApplicant ? true: false;
     for (const data of applicants) {
       const errorMessage = {
         firstName: "",
@@ -116,9 +117,11 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
     }
 
     if(!isPrimary){
-      alert("Please select a primary applicant.");
+      setIsPrimarySelected(false);
       return false;
     }
+
+    setIsPrimarySelected(true);
 
     return isValid;
 
@@ -155,6 +158,12 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
               </div>
             })
           }
+          <br/>
+          {!isPrimarySelected ? 
+          <Alert key={"danger"} variant={"danger"} style={{ marginBottom: "10px" }}>
+            <div>Please select a primary applicant.</div>
+          </Alert>
+          : ""}
           <div style={{textAlign:"right"}}>
             <Button variant="primary" onClick={addApplicant} style={{borderRadius: 20}}>
               +
