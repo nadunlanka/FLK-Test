@@ -11,8 +11,10 @@ export const ApplicantForm = (props: {data: any; setData: Function; selectedPrim
         const formData = props.data;
         formData[attributeName] = event.target.checked;
         if(event.target.checked){
+            formData[attributeName] = true;
             props.setPrimaryApplicant(props.index);
         }else{
+            formData[attributeName] = null;
             props.setPrimaryApplicant(null);
         }
         props.setData(formData);
@@ -40,8 +42,11 @@ export const ApplicantForm = (props: {data: any; setData: Function; selectedPrim
                 <Form.Label>Primary Applicant</Form.Label>
                 <Form.Check
                     type="checkbox"
-                    disabled={props.selectedPrimaryApplicant !== null && props.selectedPrimaryApplicant !== props.index}
+                    name="primary"
+                    // disabled={props.selectedPrimaryApplicant !== null && props.selectedPrimaryApplicant !== props.index}
+                    checked={props.selectedPrimaryApplicant === props.index}
                     onClick={(event) => {setFormCheckboxData(event,"isPrimary")}}
+                    onChange={(event) => {setFormCheckboxData(event,"isPrimary")}}
                 />
             </Form.Group>
 

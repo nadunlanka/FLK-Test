@@ -22,7 +22,18 @@ export const ModalForm = (props: { show: boolean; setShow: Function; title: stri
 
   const setData = (data:IApplicant, index: number) => {
     let allApplicantData = applicantData;
-    allApplicantData[index] = data;
+    if(data.isPrimary){
+      allApplicantData = allApplicantData.map((applicant, i ) => {
+        if(i === index){
+          applicant = data;
+        }else{
+          applicant.isPrimary= false;
+        }
+        return applicant;
+      });
+    }else{
+      allApplicantData[index] = data;
+    }
     setApplicantData(allApplicantData);
   }
 
